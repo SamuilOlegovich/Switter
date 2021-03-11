@@ -58,6 +58,12 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- Для почты -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- Для регистрации -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

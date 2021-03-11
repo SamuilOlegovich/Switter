@@ -18,6 +18,10 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    // поля для емел разсылки и активации
+    private String email;
+    private String activationCode;
+
     /*
         @ElementCollection - позволяет сформировать таблицу для enam
         так же ствим ленивую подгрузку (грузит по мере необходимости)
@@ -103,5 +107,21 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }
