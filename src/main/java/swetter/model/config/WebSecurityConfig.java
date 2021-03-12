@@ -1,4 +1,4 @@
-package swetter.securingweb;
+package swetter.model.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -8,10 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import swetter.model.repo.UserRepo;
 import swetter.model.service.UserService;
-
-import javax.sql.DataSource;
 
 
 
@@ -22,8 +19,6 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
-//    @Autowired
-//    private DataSource dataSource;
 
 
     @Override
@@ -32,7 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // к главной странице мы разрешаем полный досту, для всех остальных закрываем
 //                .antMatchers("/", "/home").permitAll()
-                    .antMatchers("/", "/registration").permitAll()
+                    .antMatchers("/",
+                            "/registration",
+                            "/static/**",
+                            "/activate/*").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 // включаем форму логин и разрешаем пользоватся всем

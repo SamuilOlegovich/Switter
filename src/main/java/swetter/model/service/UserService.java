@@ -17,21 +17,26 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
+    private MailSender mailSender;
+    @Autowired
     private UserRepo userRepo;
+
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
     }
 
+
+
     public boolean addUser(User user) {
         User userFromDb =  userRepo.findByUsername(user.getUsername());
 
         // смотрим есть ли пользователь в базе
         // если найден отдадим true
-        if (userFromDb != null) {
-            return false;
-        }
+        if (userFromDb != null) return false;
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
@@ -41,9 +46,24 @@ public class UserService implements UserDetailsService {
 
         // проверяем есть указан ли у пользователя мейл (не равен ли он нул и не пуст ли он)
         if (!StringUtils.isEmpty(user.getEmail())) {
-
+            String message = String.format("Hello, %s \n"
+                            + "Welcome to Switter. Place, visit next link: http://localhost:8082/activate/%s",
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+            mailSender.send(user.getEmail(), "Activation code", message);
         }
+        return true;
+    }
 
+
+
+    public boolean activateUser(String code) {
+        User user = userRepo.findByActivationCode(code);
+        if (user == null) return false;
+        // ставим нул что значит - пользователь подтвердился
+        user.setActivationCode(null);
+        userRepo.save(user);
         return true;
     }
 }
