@@ -1,3 +1,4 @@
+
 <#assign
         known = Session.SPRING_SECURITY_CONTEXT??
         >
@@ -14,5 +15,4 @@
         isAdmin = false
         >
         </#if>
-
 <!-- Для скрытия выкладки User list если это не администратор -->
