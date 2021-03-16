@@ -1,13 +1,23 @@
 package swetter.model.db;
 
+//import org.hibernate.validator.constraints.Length;
+
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Message {
     @Id // @ID - Важно чтобы была из библиотеке -> javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    // чтобы поле меседж не было пустое
+    // потом проверяем длину поля
+    @NotBlank(message = "Please fill the message")
+    @Length(max = 2048, message = "Message too long (more than 2kB)")
     private String text;
+    @Length(max = 255, message = "Message too long (more than 255)")
     private String tag;
 
     // много сообщений к одному юзеру
@@ -15,8 +25,8 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
-//    @Column(name = "filename")
-    private String filename;
+    @Column(name = "filename")
+    private String fileName;
 
     public Message() {
     }
@@ -53,11 +63,11 @@ public class Message {
         this.author = author;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

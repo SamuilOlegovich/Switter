@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import swetter.model.db.Role;
@@ -23,13 +24,21 @@ public class UserService implements UserDetailsService {
     private MailSender mailSender;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return user;
     }
 
 
@@ -45,6 +54,8 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.USER));
         // генерируем уникальное значение ссылки для перехода и подтверждения почты
         user.setActivationCode(UUID.randomUUID().toString());
+        // шифруем пароль при регистрации
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
         sendMessage(user);
@@ -69,7 +80,7 @@ public class UserService implements UserDetailsService {
 
 
     public void saveUser(User user, String username, Map<String, String> form) {
-        user.setUsername(username);
+        user.setUserName(username);
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());

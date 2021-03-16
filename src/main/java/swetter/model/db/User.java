@@ -4,6 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,11 +16,19 @@ public class User implements UserDetails {
     @Id // @ID - Важно чтобы была из библиотеке -> javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String username;
+    @Column(name = "username")
+    @NotBlank(message = "User name cannot be empty")
+    private String userName;
+    @NotBlank(message = "Password cannot be empty")
     private String password;
+    @Transient // говорит о том что это поле не надо запихивать в базу данных
+    @NotBlank(message = "Password confirmation cannot be empty")
+    private String passwordTwo;
     private boolean active;
 
     // поля для емел разсылки и активации
+    @Email(message = "Email is not correct")
+    @NotBlank(message = "Email cannot be empty")
     private String email;
     private String activationCode;
 
@@ -78,11 +88,11 @@ public class User implements UserDetails {
     }
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -123,5 +133,13 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getPasswordTwo() {
+        return passwordTwo;
+    }
+
+    public void setPasswordTwo(String passwordTwo) {
+        this.passwordTwo = passwordTwo;
     }
 }
