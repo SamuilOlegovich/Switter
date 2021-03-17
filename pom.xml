@@ -123,6 +123,12 @@
 		</dependency>
 
 
+		<!-- Зависимость на Spring Session -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+		</dependency>
+
 
 
 		<dependency>

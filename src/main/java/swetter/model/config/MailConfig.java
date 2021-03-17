@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
@@ -32,6 +33,13 @@ public class MailConfig {
     private String protocol;
     @Value("${mail.debug}")
     private String debug;
+
+
+    // для капчи под рест
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
 
 
     @Bean
