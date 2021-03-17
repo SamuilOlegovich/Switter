@@ -21,9 +21,9 @@ public class User implements UserDetails {
     private String userName;
     @NotBlank(message = "Password cannot be empty")
     private String password;
-    @Transient // говорит о том что это поле не надо запихивать в базу данных
-    @NotBlank(message = "Password confirmation cannot be empty")
-    private String passwordTwo;
+//    @Transient // говорит о том что это поле не надо запихивать в базу данных
+//    @NotBlank(message = "Password confirmation cannot be empty")
+//    private String passwordTwo;
     private boolean active;
 
     // поля для емел разсылки и активации
@@ -133,13 +133,5 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
-    }
-
-    public String getPasswordTwo() {
-        return passwordTwo;
-    }
-
-    public void setPasswordTwo(String passwordTwo) {
-        this.passwordTwo = passwordTwo;
     }
 }

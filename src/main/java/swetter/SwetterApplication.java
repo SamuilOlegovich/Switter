@@ -9,5 +9,4 @@ public class SwetterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SwetterApplication.class, args);
 	}
-
 }
