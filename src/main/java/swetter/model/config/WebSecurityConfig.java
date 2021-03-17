@@ -49,6 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .permitAll()
                 .and()
+                // для памяти пользователя даже если он куда-то ушел и потом вернулся
+                // другими словами самоавторизация
+                    .rememberMe()
+                .and()
                 // включаем форму логоут и разрешаем пользоватся всем
                     .logout()
                     .permitAll();
