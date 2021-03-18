@@ -1,6 +1,8 @@
 package swetter.model.service;
 
 
+import org.springframework.beans.factory.annotation.Value;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +28,8 @@ public class UserService implements UserDetailsService {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Value("${hostname}")
+    private String hostname;
 
 
 
@@ -57,7 +61,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
-        sendMessage(user);
+//        sendMessage(user);
         return true;
     }
 
@@ -124,11 +128,13 @@ public class UserService implements UserDetailsService {
 
     private void sendMessage(User user) {
         // проверяем есть указан ли у пользователя мейл (не равен ли он нул и не пуст ли он)
-        if (!StringUtils.isEmpty(user.getEmail())) {
+        if (!Strings.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to Sweater. Please, visit next link: http://localhost:8080/activate/%s",
+//                            "Welcome to Sweater. Please, visit next link: http://localhost:8080/activate/%s",
+                            "Welcome to Sweater. Please, visit next link: http://%s/activate/%s",
                     user.getUsername(),
+                    hostname,
                     user.getActivationCode()
             );
             mailSender.send(user.getEmail(), "Activation code", message);

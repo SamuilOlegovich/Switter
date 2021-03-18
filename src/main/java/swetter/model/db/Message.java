@@ -25,8 +25,8 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
-    @Column(name = "filename")
-    private String fileName;
+//    @Column(name = "filename") // странно почему не работают эти анотации - приходится писать криво переменные
+    private String filename;
 
     public Message() {
     }
@@ -63,11 +63,23 @@ public class Message {
         this.author = author;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

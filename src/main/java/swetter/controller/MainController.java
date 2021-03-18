@@ -88,7 +88,7 @@ public class MainController {
                 String resultFileName = uuidFile + "." + file.getOriginalFilename();
                 // загружаем сам файл
                 file.transferTo(new File(uploadPath + "/" + resultFileName));
-                message.setFileName(resultFileName);
+                message.setFilename(resultFileName);
             }
             // чтобы форма ввода закрылась
             model.addAttribute("message", null);
