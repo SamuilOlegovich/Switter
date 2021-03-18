@@ -16,9 +16,9 @@ public class User implements UserDetails {
     @Id // @ID - Важно чтобы была из библиотеке -> javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name = "username")
+//    @Column(name = "username")
     @NotBlank(message = "User name cannot be empty")
-    private String userName;
+    private String username;
     @NotBlank(message = "Password cannot be empty")
     private String password;
 //    @Transient // говорит о том что это поле не надо запихивать в базу данных
@@ -88,11 +88,11 @@ public class User implements UserDetails {
     }
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

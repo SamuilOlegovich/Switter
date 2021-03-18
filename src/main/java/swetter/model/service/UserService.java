@@ -79,7 +79,7 @@ public class UserService implements UserDetailsService {
 
 
     public void saveUser(User user, String username, Map<String, String> form) {
-        user.setUserName(username);
+        user.setUsername(username);
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());

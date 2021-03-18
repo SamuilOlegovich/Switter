@@ -57,7 +57,6 @@ public class MailConfig {
         // в продакшине лучше отключать эту перременную
         properties.setProperty("mail.debug", debug);
 
-
         return javaMailSender;
     }
 

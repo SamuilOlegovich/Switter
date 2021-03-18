@@ -24,11 +24,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        // 8 - надежность шифрования
-        return new BCryptPasswordEncoder(8);
-    }
+    // если этот бин тут находится програама не стартует
+//    @Bean
+//    public PasswordEncoder getPasswordEncoder() {
+//        // 8 - надежность шифрования
+//        return new BCryptPasswordEncoder(8);
+//    }
 
 
 
