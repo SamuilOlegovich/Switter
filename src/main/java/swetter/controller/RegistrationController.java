@@ -58,14 +58,13 @@ public class RegistrationController {
             model.addAttribute("captchaError", "Fill captcha");
         }
 
-//        boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm); // в оригинале так (не работает StringUtils.isEmpty)
         boolean isConfirmEmpty = Strings.isEmpty(passwordConfirm);
 
         if (isConfirmEmpty) {
             model.addAttribute("password2Error", "Password confirmation cannot be empty");
         }
 
-        // проверяем сзодятсяли два пароля которые юзер ввел при регистрации
+        // проверяем совпадают ли два пароля которые юзер ввел при регистрации
         if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
             model.addAttribute("passwordError", "Passwords are different!");
         }
