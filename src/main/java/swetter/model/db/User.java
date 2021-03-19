@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -25,13 +26,11 @@ public class User implements UserDetails {
 //    @NotBlank(message = "Password confirmation cannot be empty")
 //    private String passwordTwo;
     private boolean active;
-
     // поля для емел разсылки и активации
     @Email(message = "Email is not correct")
     @NotBlank(message = "Email cannot be empty")
     private String email;
     private String activationCode;
-
     /*
         @ElementCollection - позволяет сформировать таблицу для enam
         так же ствим ленивую подгрузку (грузит по мере необходимости)
@@ -46,12 +45,34 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    // это у нас опратная связ по сообщением связана с автьором
+    // (будем получать все сррбщения которые были созданы пользователем)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Message> messages;
+
+
+
+
     public User() {
     }
 
 //    Для скрытия выкладки User list если это не администратор
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId() == user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
     @Override
@@ -133,5 +154,13 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 }

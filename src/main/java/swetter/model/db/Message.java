@@ -7,6 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+
+
+
 @Entity
 public class Message {
     @Id // @ID - Важно чтобы была из библиотеке -> javax.persistence.Id
@@ -19,7 +22,6 @@ public class Message {
     private String text;
     @Length(max = 255, message = "Message too long (more than 255)")
     private String tag;
-
     // много сообщений к одному юзеру
     // и сразу выдергиваем автора к каждому сообщению
     @ManyToOne(fetch = FetchType.EAGER)
@@ -27,6 +29,9 @@ public class Message {
     private User author;
 //    @Column(name = "filename") // странно почему не работают эти анотации - приходится писать криво переменные
     private String filename;
+
+
+
 
     public Message() {
     }
@@ -36,6 +41,8 @@ public class Message {
         this.text = text;
         this.tag = tag;
     }
+
+
 
     public String getAuthorName() {
         return author != null ? author.getUsername() : "<none>";

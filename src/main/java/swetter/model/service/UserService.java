@@ -1,23 +1,24 @@
 package swetter.model.service;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import swetter.model.db.Message;
 import swetter.model.db.Role;
 import swetter.model.db.User;
 import swetter.model.repo.UserRepo;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
-
 
 
 @Service
@@ -48,7 +49,6 @@ public class UserService implements UserDetailsService {
 
     public boolean addUser(User user) {
         User userFromDb =  userRepo.findByUsername(user.getUsername());
-
         // смотрим есть ли пользователь в базе
         // если найден отдадим true
         if (userFromDb != null) return false;
@@ -108,13 +108,13 @@ public class UserService implements UserDetailsService {
         if (isEmailChanged) {
             user.setEmail(email);
             // смотрим если мыло изменилось, то генерируем новый код активации
-            if (!StringUtils.isEmpty(email)) {
+            if (!Strings.isEmpty(email)) {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
 
         // проверяем установил ли пользователь новый пароль
-        if (!StringUtils.isEmpty(password)) {
+        if (!Strings.isEmpty(password)) {
             user.setPassword(password);
         }
         // сохраняем обновленные данные юзера
