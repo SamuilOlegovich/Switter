@@ -73,21 +73,6 @@ public class MainController {
             model.addAttribute("message", message);
         } else {
             fileUploader.saveFile(message, file);
-//            if (file != null && !file.getOriginalFilename().isEmpty()) {
-//                File uploadDir = new File(uploadPath);
-//                // проверяем есть ли директория, если нет то создаем ее
-//                if (!uploadDir.exists()) {
-//                    uploadDir.mkdir();
-//                }
-//                // создаем уникальное имя файла
-//                String uuidFile = UUID.randomUUID().toString();
-//                // и к имени добавляем оригинальное название файла
-//                // которое изначально загрузил пользователь
-//                String resultFileName = uuidFile + "." + file.getOriginalFilename();
-//                // загружаем сам файл
-//                file.transferTo(new File(uploadPath + "/" + resultFileName));
-//                message.setFilename(resultFileName);
-//            }
             // чтобы форма ввода закрылась
             model.addAttribute("message", null);
             messageRepo.save(message);

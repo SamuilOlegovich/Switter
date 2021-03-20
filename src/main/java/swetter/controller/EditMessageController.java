@@ -42,6 +42,14 @@ public class EditMessageController {
     ) {
         // получаем список сообщений юзера и кладем их в модель
         Set<Message> messages = user.getMessages();
+
+        // для подписок
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        // определяет является  ли текущий пользователь подписчиком того пользователя на чью страницу он зашел
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
         // отображаем сообщения только если пользователь выбрал свои сообщения

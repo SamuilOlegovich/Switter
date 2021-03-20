@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -44,11 +45,27 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-
     // это у нас опратная связ по сообщением связана с автьором
     // (будем получать все сррбщения которые были созданы пользователем)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages;
+    // для подписок на нас
+    // для обеспечения @ManyToMany - требуется дополнительная таблица
+    // для этого есть специальная анатация - @JoinTable (колекция состоящая из одного элемента)
+    // user_subscription - название таблицы
+    // channel_id - пользователь на которого подписываемся
+    // subscriber_id
+    @ManyToMany
+    @JoinTable(name = "user_subscription",
+            joinColumns = {@JoinColumn(name = "channel_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")})
+    private Set<User> subscribers = new HashSet<>();
+    // для наших собственных подписок
+    @ManyToMany
+    @JoinTable(name = "user_subscription",
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")})
+    private Set<User> subscriptions = new HashSet<>();
 
 
 
@@ -162,5 +179,21 @@ public class User implements UserDetails {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public Set<User> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<User> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 }

@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 
+
+
+
 @Service
 public class FileUploader {
     // ищет и вставляет из проперти
@@ -23,9 +26,7 @@ public class FileUploader {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
             // проверяем есть ли директория, если нет то создаем ее
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
+            if (!uploadDir.exists()) { uploadDir.mkdir(); }
             // создаем уникальное имя файла
             String uuidFile = UUID.randomUUID().toString();
             // и к имени добавляем оригинальное название файла

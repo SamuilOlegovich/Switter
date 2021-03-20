@@ -39,7 +39,8 @@ public class UserController {
 
     @GetMapping("{user}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String userEditForm(@PathVariable User user, Model model) {
+    public String userEditForm(@PathVariable User user, Model model
+    ) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "userEdit";
@@ -52,7 +53,8 @@ public class UserController {
     private String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam("userId") User user) {
+            @RequestParam("userId") User user
+    ) {
 
         userService.saveUser(user, username, form);
         return "redirect:/user";
@@ -64,7 +66,8 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     private String getProfile(Model model,
             // отдает пользователя из контекста (не приходится лишний раз лезть в базу данных)
-            @AuthenticationPrincipal User user) {
+            @AuthenticationPrincipal User user
+    ) {
 
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
@@ -75,8 +78,51 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     private String updateProfile(@AuthenticationPrincipal User user,
                                  @RequestParam String password,
-                                 @RequestParam String email) {
+                                 @RequestParam String email
+    ) {
         userService.updateProfile(user, password, email);
         return "redirect:/user/profile";
+    }
+
+
+    // дляподписок и подписчиков
+    // подписаться
+    @GetMapping("/subscribe/{user}")
+    public String subscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ) {
+        userService.subscribe(currentUser, user);
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    // отписаться
+    @GetMapping("/unsubscribe/{user}")
+    public String unsubscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ) {
+        userService.unsubscribe(currentUser, user);
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    // список подписок или подписчики
+    @GetMapping("{type}/{user}/list")
+    public String userList(
+            Model model,
+            @PathVariable User user,
+            @PathVariable String type
+    ) {
+        model.addAttribute("userChannel", user);
+        model.addAttribute("type", type);
+
+        if ("subscriptions".equals(type)) {
+            // подписки
+            model.addAttribute("users", user.getSubscriptions());
+        } else {
+            // подписчики
+            model.addAttribute("users", user.getSubscribers());
+        }
+        return "subscriptions";
     }
 }
