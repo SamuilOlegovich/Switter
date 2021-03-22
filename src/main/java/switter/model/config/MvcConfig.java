@@ -2,10 +2,11 @@ package switter.model.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+import switter.model.util.RedirectInterceptor;
 
 
 @Configuration
@@ -35,5 +36,12 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 // classpath --> ищет папку в дереве проекта
                 .addResourceLocations("classpath:/static/");
+    }
+
+
+    // для корректной работы Turbolinks
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RedirectInterceptor());
     }
 }
