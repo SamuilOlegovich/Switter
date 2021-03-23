@@ -56,7 +56,6 @@ public class UserService implements UserDetailsService {
         // шифруем пароль при регистрации
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
-
 //        sendMessage(user);
         return true;
     }

@@ -35,12 +35,6 @@ public class MailConfig {
     private String debug;
 
 
-    // для капчи под рест
-    @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
-
 
     @Bean
     public JavaMailSender getMailSender () {

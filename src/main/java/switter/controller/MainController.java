@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import switter.model.db.Message;
 import switter.model.db.User;
+import switter.model.db.dto.MessageDto;
 import switter.model.repo.MessageRepo;
 import switter.model.service.FileUploader;
+import switter.model.service.MessageService;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -30,6 +32,8 @@ public class MainController {
     private MessageRepo messageRepo;
     @Autowired
     private FileUploader fileUploader;
+    @Autowired
+    private MessageService messageService;
 
 
 
@@ -46,14 +50,10 @@ public class MainController {
                        Model model,
                        // (пагинация)
                        // делаем выборку и сортировку сообщений (самые первые будут показаны которые самые новые)
-                       @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Message> page;
-
-        if (filter != null && !filter.isEmpty()) {
-            page = messageRepo.findByTag(filter, pageable);
-        } else {
-            page = messageRepo.findAll(pageable);
-        }
+                       @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
+                       @AuthenticationPrincipal User user
+    ) {
+        Page<MessageDto> page = messageService.messageList(pageable, filter, user);
 
         model.addAttribute("page", page);
         model.addAttribute("url", "/main");
@@ -72,7 +72,9 @@ public class MainController {
             BindingResult bindingResult,
             Model model,
             // для загрузки файла
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+
         message.setAuthor(user);
 
         // если имеются ошибки то выполняем обработку этого кейса

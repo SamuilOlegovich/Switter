@@ -58,35 +58,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
-
-
-    //    @Override
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder.jdbcAuthentication()
-//                // позволяет ходить в бд и искать пользователей их роли
-//                .dataSource(dataSource)
-//                // шифрует пароль - NoOpPasswordEncoder - только для тестирования
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-//                // запросы - чтобы система могла найти пользователя по его имени
-//                .usersByUsernameQuery("select username, password, active from usr where username=?")
-//                // помогает получить список пользователей с их ролями
-//                .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
-//    }
-
-
-
-    //    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        // ничего не шифрует ни чего не хранит, нужен для отладки
-//        // заново при каждом входе создает пользователя
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("u")
-//                        .password("i")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
 }
