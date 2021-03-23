@@ -19,7 +19,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-//@PreAuthorize("hasAuthority('ADMIN')") // проверяет наличие у пользовотеля права доступа
 public class UserController {
     @Autowired
     private UserService userService;
@@ -28,6 +27,7 @@ public class UserController {
 
 
     @GetMapping
+    // проверяет наличие у пользовотеля права доступа
     @PreAuthorize("hasAuthority('ADMIN')")
     // перенеся сюда эту анатацию мы даем разрешение использовать этот метод всем авторизованным пользователям
     public String userList(Model model) {
@@ -85,9 +85,10 @@ public class UserController {
     }
 
 
+
     // дляподписок и подписчиков
     // подписаться
-    @GetMapping("/subscribe/{user}")
+    @GetMapping("subscribe/{user}")
     public String subscribe(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user
@@ -96,8 +97,9 @@ public class UserController {
         return "redirect:/user-messages/" + user.getId();
     }
 
+
     // отписаться
-    @GetMapping("/unsubscribe/{user}")
+    @GetMapping("unsubscribe/{user}")
     public String unsubscribe(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user
