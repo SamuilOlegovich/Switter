@@ -50,4 +50,6 @@ public interface MessageRepo extends CrudRepository<Message, Long> {
             "group by m")
     Page<MessageDto> findByUser(Pageable pageable, @Param("author") User author, @Param("user") User user);
 
+//    Message findById(long id);
+
 }

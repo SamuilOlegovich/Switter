@@ -22,7 +22,6 @@ import switter.model.service.FileUploader;
 import switter.model.service.MessageService;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -53,6 +52,7 @@ public class EditMessageController {
             @RequestParam(required = false) Message message,
             @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
     ) {
+        System.out.println("1");
         // получаем список сообщений юзера и кладем их в модель
         Page<MessageDto> page = messageService.messageListForUser(pageable, currentUser, author);
 
@@ -84,6 +84,7 @@ public class EditMessageController {
             @RequestParam("tag") String tag,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
+        System.out.println("2");
         // чтобы пользователь мог менять только свои сообщения
         if (message.getAuthor().equals(currentUser)) {
             // если поля текст и тег не пустые - тогда обновляем их
@@ -99,6 +100,22 @@ public class EditMessageController {
 
 
 
+    // удалить сообщение
+    @GetMapping("/delete/{author}/{messageId}")
+    public String deleteUserMessages(
+            // берет пользователя из сессии
+            @AuthenticationPrincipal User currentUser,
+            // айди юзера и айди сообщения
+            @PathVariable long author,
+            @PathVariable long messageId
+    ) {
+        messageRepo.deleteById(messageId);
+        return "redirect:/user-messages/" + author;
+    }
+
+
+
+    // лайки
     @GetMapping("/messages/{message}/like")
     public String like(
             @AuthenticationPrincipal User currentUser,
