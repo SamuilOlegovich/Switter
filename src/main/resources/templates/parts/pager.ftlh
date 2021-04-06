@@ -1,5 +1,4 @@
-<!-- для ускорения работы (пагинация) -->
-<#macro pager page url="" >
+<#macro pager url page>
 <#if page.getTotalPages() gt 7>
 <#assign
         totalPages = page.getTotalPages()

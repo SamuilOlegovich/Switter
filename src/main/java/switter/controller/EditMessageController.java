@@ -52,7 +52,6 @@ public class EditMessageController {
             @RequestParam(required = false) Message message,
             @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        System.out.println("1");
         // получаем список сообщений юзера и кладем их в модель
         Page<MessageDto> page = messageService.messageListForUser(pageable, currentUser, author);
 
@@ -63,7 +62,7 @@ public class EditMessageController {
         // определяет является  ли текущий пользователь подписчиком того пользователя на чью страницу он зашел
         model.addAttribute("isSubscriber", author.getSubscribers().contains(currentUser));
 
-        model.addAttribute("page", page);
+        model.addAttribute("page  ", page);
         model.addAttribute("message", message);
         // отображаем сообщения только если пользователь выбрал свои сообщения
         // обязательно переопределить в юзере иквелс и хашкод
@@ -84,7 +83,6 @@ public class EditMessageController {
             @RequestParam("tag") String tag,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        System.out.println("2");
         // чтобы пользователь мог менять только свои сообщения
         if (message.getAuthor().equals(currentUser)) {
             // если поля текст и тег не пустые - тогда обновляем их
@@ -120,6 +118,7 @@ public class EditMessageController {
     public String like(
             @AuthenticationPrincipal User currentUser,
             @PathVariable Message message,
+            // позволяет проборосить какие-то параметры в тот метод в который делается редирект
             RedirectAttributes redirectAttributes,
             @RequestHeader(required = false) String referer
     ) {

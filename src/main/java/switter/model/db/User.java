@@ -45,10 +45,11 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-    // это у нас опратная связ по сообщением связана с автьором
+    // это у нас обратная связ по сообщением связана с автором
     // (будем получать все сррбщения которые были созданы пользователем)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages;
+
     // для подписок на нас
     // для обеспечения @ManyToMany - требуется дополнительная таблица
     // для этого есть специальная анатация - @JoinTable (колекция состоящая из одного элемента)
@@ -60,6 +61,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "channel_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")})
     private Set<User> subscribers = new HashSet<>();
+
     // для наших собственных подписок
     @ManyToMany
     @JoinTable(name = "user_subscription",

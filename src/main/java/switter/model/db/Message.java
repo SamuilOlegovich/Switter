@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+
 @Entity
 public class Message {
     @Id // @ID - Важно чтобы была из библиотеке -> javax.persistence.Id
